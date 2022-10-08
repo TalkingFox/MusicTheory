@@ -1,3 +1,4 @@
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
@@ -5,7 +6,7 @@ module.exports = {
     entry: './src/index.ts',
     devtool: 'inline-source-map',
     devServer: {
-        static: './dist'        
+        static: './dist'
     },
     module: {
         rules: [
@@ -14,10 +15,18 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ],
+                sideEffects: true
+            }
         ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js', '.css'],
     },
     output: {
         filename: 'bundle.js',
@@ -27,6 +36,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Root Page',
             template: 'src/index.html'
-        })
+        }),
+        new MiniCssExtractPlugin()
     ],
 };

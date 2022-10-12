@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './src/scales.ts',
     devtool: 'inline-source-map',
     devServer: {
         static: './dist'
@@ -35,7 +35,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Root Page',
-            template: 'src/index.html'
+            template: 'src/scales.html'
         }),
         new MiniCssExtractPlugin()
     ],

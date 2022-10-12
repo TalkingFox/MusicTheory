@@ -1,8 +1,9 @@
 import './keyboard.css';
-import { SoundNoteModifier, SoundService } from "../../services/sound-service";
+import { SoundNoteModifier, SoundService, SoundServiceNote } from "../../services/sound-service";
 import { KeyboardKey, KeyboardKeyModifier } from "./enums";
 import { KeyboardComponentSettings } from "./keyboard-component-settings";
 import { KeyboardNote } from "./keyboard-note";
+import { KeyboardScale } from './keyboard-scale';
 
 class KeyboardNode {
     public Notes: KeyboardNote[];
@@ -71,8 +72,8 @@ class KeyboardChain {
 }
 
 export class KeyboardComponent {
-    private soundService: SoundService;
-    private modifierMap: Map<KeyboardKeyModifier, SoundNoteModifier> = new Map<KeyboardKeyModifier, SoundNoteModifier>([
+    private m_soundService: SoundService;
+    private m_modifierMap: Map<KeyboardKeyModifier, SoundNoteModifier> = new Map<KeyboardKeyModifier, SoundNoteModifier>([
         [KeyboardKeyModifier.Natural, SoundNoteModifier.Natural],
         [KeyboardKeyModifier.Flat, SoundNoteModifier.Flat],
         [KeyboardKeyModifier.Sharp, SoundNoteModifier.Sharp],
@@ -80,9 +81,26 @@ export class KeyboardComponent {
 
 
     public constructor(settings: KeyboardComponentSettings, soundService: SoundService) {
-        this.soundService = soundService;
+        this.m_soundService = soundService;
         var keyboard = this.construct(settings);
         settings.parent.appendChild(keyboard);
+    }
+
+    public async playScale(scale: KeyboardScale) : Promise<void> {
+        let octave = 4
+        const firstNote = scale.Notes[0];
+        let soundServiceNotes = scale.Notes.map((note: KeyboardNote, index: number) => {
+            if (note.Key == firstNote.Key && index != 0) {
+                octave += 1;
+            }
+            let soundServiceNote = new SoundServiceNote();
+            soundServiceNote.Note = KeyboardKey[note.Key];
+            soundServiceNote.Modifier = this.m_modifierMap.get(note.Modifier);
+            soundServiceNote.octave = octave;
+            
+            return soundServiceNote;
+        });        
+        this.m_soundService.PlayNotes(soundServiceNotes);
     }
 
     private construct(settings: KeyboardComponentSettings): Element {
@@ -112,14 +130,15 @@ export class KeyboardComponent {
                 
                 var modifierLookup = clickedElement.dataset.modifier as keyof typeof KeyboardKeyModifier;
                 var modifierToPlay = KeyboardKeyModifier[modifierLookup];
-                var noteModifierToPlay = this.modifierMap.get(modifierToPlay);
+                var noteModifierToPlay = this.m_modifierMap.get(modifierToPlay);
                 var octaveToPlay =  clickedElement.dataset.octave;
 
-                this.soundService.PlayNote(
-                    noteToPlay,
-                    noteModifierToPlay,
-                    Number(octaveToPlay)
-                );
+                var soundServiceNote = new SoundServiceNote();
+                soundServiceNote.Note = noteToPlay;
+                soundServiceNote.Modifier = noteModifierToPlay;
+                soundServiceNote.octave = Number(octaveToPlay);
+                
+                this.m_soundService.PlayNote(soundServiceNote);
             });
             if (firstNote.Key == KeyboardKey.B) {
                 currentOctave += 1;

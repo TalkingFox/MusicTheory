@@ -78,12 +78,32 @@ export class KeyboardComponent {
         [KeyboardKeyModifier.Flat, SoundNoteModifier.Flat],
         [KeyboardKeyModifier.Sharp, SoundNoteModifier.Sharp],
     ]);
+    private m_reverseModifierMap: Map<SoundNoteModifier, KeyboardKeyModifier> = new Map<SoundNoteModifier, KeyboardKeyModifier>([
+        [SoundNoteModifier.Natural, KeyboardKeyModifier.Natural],
+        [SoundNoteModifier.Flat, KeyboardKeyModifier.Flat],
+        [SoundNoteModifier.Sharp, KeyboardKeyModifier.Sharp],
+    ]);
 
 
     public constructor(settings: KeyboardComponentSettings, soundService: SoundService) {
         this.m_soundService = soundService;
         var keyboard = this.construct(settings);
+        this.registerEvents();
         settings.parent.appendChild(keyboard);
+    }
+
+    public registerEvents(): void {
+        this.m_soundService.onNotePlayed((note: SoundServiceNote) => {
+            const modifier = this.m_reverseModifierMap.get(note.Modifier);
+            const modifierString = KeyboardKeyModifier[modifier];
+            const elementId = `${note.Note}${note.octave.toString()}${modifierString}`;
+
+            const element = document.getElementById(elementId);
+            element.classList.add('pressed');
+            setTimeout(() => {
+                element.classList.remove('pressed');
+            }, 250);
+        });
     }
 
     public async playScale(scale: KeyboardScale) : Promise<void> {
@@ -113,10 +133,11 @@ export class KeyboardComponent {
         for (var i = 0; i < settings.numberOfKeys; i++) {
             var keyElement = document.createElement('button');
             var firstNote = currentNode.Notes[0];
-
+            
             keyElement.dataset.note = KeyboardKey[firstNote.Key];
             keyElement.dataset.octave = currentOctave.toString();
-            keyElement.dataset.modifier = KeyboardKeyModifier[firstNote.Modifier]            
+            keyElement.dataset.modifier = KeyboardKeyModifier[firstNote.Modifier]
+            keyElement.id = `${keyElement.dataset.note}${keyElement.dataset.octave}${keyElement.dataset.modifier}`
 
             keyElement.classList.add('keyboard-key');
             if (firstNote.Modifier === KeyboardKeyModifier.Natural) {

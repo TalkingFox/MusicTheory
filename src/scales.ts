@@ -10,7 +10,7 @@ function renderPage() {
     var settings = new KeyboardComponentSettings();
     settings.parent = container;
     settings.numberOfKeys = 32;
-    settings.octave = 4;
+    settings.octave = 3;
     settings.startingNote = new KeyboardNote(KeyboardKey.A, KeyboardKeyModifier.Natural);
     
     var soundService = new SoundService();

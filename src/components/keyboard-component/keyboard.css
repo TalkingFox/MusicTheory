@@ -16,3 +16,7 @@
     width: 2rem;
     height: 8rem;    
   }
+
+  .pressed {
+    background-color: silver;
+  }

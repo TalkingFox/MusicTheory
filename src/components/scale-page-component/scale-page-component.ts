@@ -11,6 +11,19 @@ import { ScalePageScale } from "./scale-page-scale";
 export class ScalePageComponent {
     private m_keyboard: KeyboardComponent;
     private m_notation: ScaleNotationComponent;
+    private m_playScale: HTMLButtonElement;
+    private m_activeScale: ScalePageScale;
+
+    private m_supportedScales: Map<string,ScalePageScale> = new Map([
+        ['C Major', {
+            Notes: KeyboardScale.CMajor,
+            Name: 'C Major'
+        }],
+        ['F Major', {
+            Notes: KeyboardScale.FMajor,
+            Name: 'F Major'
+        }],
+    ]);
 
     constructor() {
         this.buildPage();
@@ -27,37 +40,26 @@ export class ScalePageComponent {
         return new KeyboardComponent(settings, soundService);
     }
 
-    private renderSupportedScales(parentElement: HTMLElement): void {
-        const supportedScales: ScalePageScale[] = [
-            {
-                Notes: KeyboardScale.CMajor,
-                Name: 'C Major'
-            },
-            {
-                Name: 'FMajor',
-                Notes: KeyboardScale.FMajor
-            }
-        ];
-    
+    private renderSupportedScales(parentElement: HTMLElement): void {    
         const listElement = document.createElement('ul');
-        supportedScales.forEach((scale: ScalePageScale) => {
+        this.m_supportedScales.forEach((scale: ScalePageScale) => {
             const scaleElement = document.createElement('li');
             scaleElement.textContent = scale.Name;
             scaleElement.classList.add('scale-link');
-            
+            scaleElement.addEventListener('click', () => {
+                this.updateScaleElements(scale);
+            });
+
             
             listElement.appendChild(scaleElement);
         });
         parentElement.appendChild(listElement);
     }
 
-    private updateScaleElements(): void {
-
-    }
-
-    private renderNotation(parentElement: HTMLElement): void {
-        this.m_notation = new ScaleNotationComponent(parentElement);
-        this.m_notation.renderScale(1000);
+    private updateScaleElements(scale: ScalePageScale): void {
+        this.m_activeScale = scale;
+        this.m_notation.renderScale(1000, scale.Notes);
+        this.m_playScale.textContent = `Play ${scale.Name} Scale`;
     }
 
     private buildPage(): void {
@@ -69,20 +71,21 @@ export class ScalePageComponent {
         const notationContainer = document.createElement('div');
         notationContainer.id = 'notation-container';
         document.body.appendChild(notationContainer);
-        this.renderNotation(notationContainer);
+        this.m_notation = new ScaleNotationComponent(notationContainer);
     
         var button = document.createElement('button')
         button.textContent = "Play C Major Scale"
         button.addEventListener('click', () => {
-            this.m_keyboard.playScale(KeyboardScale.CMajor, 4)
+            this.m_keyboard.playScale(this.m_activeScale.Notes, 4)
         });
         document.body.appendChild(button);
+        this.m_playScale = button;
 
         const keyboardContainer = document.createElement('div');
         keyboardContainer.id = 'keyboard-container';
         document.body.appendChild(keyboardContainer);
         this.m_keyboard = this.buildKeyboard(keyboardContainer);
-    }
 
-    
+        this.updateScaleElements(this.m_supportedScales.get('C Major'));
+    }
 }

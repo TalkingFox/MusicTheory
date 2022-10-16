@@ -95,7 +95,7 @@ export class KeyboardComponent {
     public registerEvents(): void {
         this.m_soundService.onNotePlayed((note: SoundServiceNote) => {
             const modifier = this.m_reverseModifierMap.get(note.Modifier);
-            const modifierString = KeyboardKeyModifier[modifier];
+            const modifierString = modifier.toString();
             const elementId = `${note.Note}${note.octave.toString()}${modifierString}`;
 
             const element = document.getElementById(elementId);
@@ -135,7 +135,7 @@ export class KeyboardComponent {
             
             keyElement.dataset.note = KeyboardKey[firstNote.Key];
             keyElement.dataset.octave = currentOctave.toString();
-            keyElement.dataset.modifier = KeyboardKeyModifier[firstNote.Modifier]
+            keyElement.dataset.modifier = firstNote.Modifier.toString();
             keyElement.id = `${keyElement.dataset.note}${keyElement.dataset.octave}${keyElement.dataset.modifier}`
 
             keyElement.classList.add('keyboard-key');

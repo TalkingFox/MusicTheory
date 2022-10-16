@@ -1,15 +1,15 @@
 export enum KeyboardKey {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
+    A = 'A',
+    B = 'B',
+    C = 'C',
+    D = 'D',
+    E = 'E',
+    F = 'F',
+    G = 'G',
 }
 
 export enum KeyboardKeyModifier {
-    Flat,
-    Sharp,
-    Natural,
+    Flat = 'b',
+    Sharp = '#',
+    Natural = '',
 }

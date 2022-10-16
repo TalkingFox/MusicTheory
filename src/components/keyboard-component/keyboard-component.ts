@@ -73,20 +73,11 @@ class KeyboardChain {
 
 export class KeyboardComponent {
     private m_soundService: SoundService;
-    private m_modifierMap: Map<KeyboardKeyModifier, SoundNoteModifier> = new Map<KeyboardKeyModifier, SoundNoteModifier>([
-        [KeyboardKeyModifier.Natural, SoundNoteModifier.Natural],
-        [KeyboardKeyModifier.Flat, SoundNoteModifier.Flat],
-        [KeyboardKeyModifier.Sharp, SoundNoteModifier.Sharp],
-    ]);
-    private m_reverseModifierMap: Map<SoundNoteModifier, KeyboardKeyModifier> = new Map<SoundNoteModifier, KeyboardKeyModifier>([
-        [SoundNoteModifier.Natural, KeyboardKeyModifier.Natural],
-        [SoundNoteModifier.Flat, KeyboardKeyModifier.Flat],
-        [SoundNoteModifier.Sharp, KeyboardKeyModifier.Sharp],
-    ]);
-
+    private m_lookupChain: KeyboardChain;
 
     public constructor(settings: KeyboardComponentSettings, soundService: SoundService) {
         this.m_soundService = soundService;
+        this.m_lookupChain = new KeyboardChain();
         var keyboard = this.construct(settings);
         this.registerEvents();
         settings.parent.appendChild(keyboard);
@@ -94,11 +85,17 @@ export class KeyboardComponent {
 
     public registerEvents(): void {
         this.m_soundService.onNotePlayed((note: SoundServiceNote) => {
-            const modifier = this.m_reverseModifierMap.get(note.Modifier);
-            const modifierString = modifier.toString();
-            const elementId = `${note.Note}${note.octave.toString()}${modifierString}`;
-
-            const element = document.getElementById(elementId);
+            const modifierString = note.Modifier.toString();
+            let elementId = `${note.Note}${note.octave.toString()}${modifierString}`;
+            console.log(elementId);
+            let element = document.getElementById(elementId);
+            if (element == null) {
+                const keyboardNote= new KeyboardNote(note.Note as KeyboardKey,note.Modifier.toString() as KeyboardKeyModifier);
+                const matchingNode = this.m_lookupChain.getNode(keyboardNote);
+                const matchingNote = matchingNode.Notes[0];
+                elementId = `${matchingNote.Key.toString()}${note.octave.toString()}${matchingNote.Modifier.toString()}`;
+                element = document.getElementById(elementId);
+            }
             element.classList.add('pressed');
             setTimeout(() => {
                 element.classList.remove('pressed');
@@ -107,14 +104,13 @@ export class KeyboardComponent {
     }
 
     public async playScale(scale: KeyboardScale, octave: number) : Promise<void> {        
-        const firstNote = scale.Notes[0];
         let soundServiceNotes = scale.Notes.map((note: KeyboardNote, index: number) => {
-            if (note.Key == firstNote.Key && index != 0) {
+            if (note.Key == KeyboardKey.C && index != 0) {
                 octave += 1;
             }
             let soundServiceNote = new SoundServiceNote();
             soundServiceNote.Note = KeyboardKey[note.Key];
-            soundServiceNote.Modifier = this.m_modifierMap.get(note.Modifier);
+            soundServiceNote.Modifier = note.Modifier.toString() as SoundNoteModifier;
             soundServiceNote.octave = octave;
             
             return soundServiceNote;
@@ -123,10 +119,9 @@ export class KeyboardComponent {
     }
 
     private construct(settings: KeyboardComponentSettings): Element {
-        var container = document.createElement('div');
-        var keyboardChain = new KeyboardChain();
+        var container = document.createElement('div');        
 
-        var currentNode = keyboardChain.getNode(settings.startingNote);
+        var currentNode = this.m_lookupChain.getNode(settings.startingNote);
         var currentOctave = settings.octave;
 
         for (var i = 0; i < settings.numberOfKeys; i++) {
@@ -148,14 +143,12 @@ export class KeyboardComponent {
                 var clickedElement = event.target as HTMLButtonElement;
                 var noteToPlay = clickedElement.dataset.note;
                 
-                var modifierLookup = clickedElement.dataset.modifier as keyof typeof KeyboardKeyModifier;
-                var modifierToPlay = KeyboardKeyModifier[modifierLookup];
-                var noteModifierToPlay = this.m_modifierMap.get(modifierToPlay);
+                var noteModifierToPlay = clickedElement.dataset.modifier
                 var octaveToPlay =  clickedElement.dataset.octave;
 
                 var soundServiceNote = new SoundServiceNote();
                 soundServiceNote.Note = noteToPlay;
-                soundServiceNote.Modifier = noteModifierToPlay;
+                soundServiceNote.Modifier = noteModifierToPlay as SoundNoteModifier;
                 soundServiceNote.octave = Number(octaveToPlay);
                 
                 this.m_soundService.PlayNote(soundServiceNote);

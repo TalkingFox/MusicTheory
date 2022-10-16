@@ -20,8 +20,8 @@ export class SoundServiceNote {
             serviceNote.octave = Number(note[1]);
         }
         else {
-            var modifier = note[1] as keyof typeof SoundNoteModifier;
-            serviceNote.Modifier = SoundNoteModifier[modifier];
+            var modifier = note[1] as SoundNoteModifier;
+            serviceNote.Modifier = modifier;
             serviceNote.octave = Number(note[2]);
         }
 

@@ -10,8 +10,8 @@ import { SoundService } from './services/sound-service';
 function buildKeyboard(parentElement: HTMLElement): KeyboardComponent {
     var settings = new KeyboardComponentSettings();
     settings.parent = parentElement;
-    settings.numberOfKeys = 32;
-    settings.octave = 3;
+    settings.numberOfKeys = 44;
+    settings.octave = 1;
     settings.startingNote = new KeyboardNote(KeyboardKey.A, KeyboardKeyModifier.Natural);
     
     var soundService = new SoundService();
@@ -37,7 +37,7 @@ function renderPage() {
     var button = document.createElement('button')
     button.textContent = "Play C Major Scale"
     button.addEventListener('click', () => {
-        keyboard.playScale(KeyboardScale.CMajor)
+        keyboard.playScale(KeyboardScale.CMajor, 4)
     });
     document.body.appendChild(button);
 }

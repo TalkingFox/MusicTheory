@@ -1,4 +1,4 @@
-import { KeyboardKey } from "./enums";
+import { KeyboardKey, KeyboardKeyModifier } from "./enums";
 import { KeyboardNote } from "./keyboard-note";
 
 export class KeyboardScale {
@@ -21,5 +21,16 @@ export class KeyboardScale {
         new KeyboardNote(KeyboardKey.A),
         new KeyboardNote(KeyboardKey.B),
         new KeyboardNote(KeyboardKey.C)
+    ]);
+
+    public static FMajor: KeyboardScale = new KeyboardScale([
+        new KeyboardNote(KeyboardKey.F),
+        new KeyboardNote(KeyboardKey.G),
+        new KeyboardNote(KeyboardKey.A),
+        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.C),
+        new KeyboardNote(KeyboardKey.D),
+        new KeyboardNote(KeyboardKey.E),
+        new KeyboardNote(KeyboardKey.F)
     ])
 }

@@ -1,6 +1,5 @@
-import { EasyScore, Factory, System, SystemOptions } from "vexflow";
-import { KeyboardKey, KeyboardKeyModifier } from "../keyboard-component/enums";
-import { KeyboardNote } from "../keyboard-component/keyboard-note";
+import { EasyScore, Factory } from "vexflow";
+import { KeyboardKey } from "../keyboard-component/enums";
 import { KeyboardScale } from "../keyboard-component/keyboard-scale";
 
 export class ScaleNotationComponent {
@@ -42,7 +41,7 @@ export class ScaleNotationComponent {
             if (i != 0 && note.Key == KeyboardKey.C) {
                 octave += 1;
             }
-            const noteInSyntax = `${note.Key.toString()}${note.Modifier.toString()}${octave}`;
+            const noteInSyntax = `${note.Key.toString()}${octave}`;
             notesInSyntax.push(noteInSyntax);
         }
 
@@ -52,7 +51,7 @@ export class ScaleNotationComponent {
             if (i != scale.Notes.length -1  && note.Key == KeyboardKey.B) {
                 octave -= 1;
             }
-            const noteInSyntax = `${note.Key.toString()}${note.Modifier.toString()}${octave}`;
+            const noteInSyntax = `${note.Key.toString()}${octave}`;
             notesInSyntax.push(noteInSyntax);
         }
         
@@ -87,8 +86,11 @@ export class ScaleNotationComponent {
                 });
             
             if (currentIndex == 0) {
+                const firstNote = scale.Notes[0];
+                const keySignature = `${firstNote.Key.toString()}${firstNote.Modifier.toString()}`
                 stave.addClef('treble')
-                    .addTimeSignature('4/4');
+                    .addTimeSignature('4/4')
+                    .addKeySignature(keySignature);
                 system.addConnector('brace');
                 system.addConnector('singleRight');
                 system.addConnector('singleLeft');
@@ -99,6 +101,9 @@ export class ScaleNotationComponent {
 
     private renderBassClef(score: EasyScore, scale: KeyboardScale, width: number) {
         let octave = 3;
+        if (scale.Notes[0].Key.toString() > 'D') {
+            octave -= 1;
+        }
         const notesInSyntax = [];
         
         // Once up the scale
@@ -107,7 +112,7 @@ export class ScaleNotationComponent {
             if (i != 0 && note.Key == KeyboardKey.C) {
                 octave += 1;
             }
-            const noteInSyntax = `${note.Key.toString()}${note.Modifier.toString()}${octave}`;
+            const noteInSyntax = `${note.Key.toString()}${octave}`;
             notesInSyntax.push(noteInSyntax);
         }
 
@@ -117,7 +122,7 @@ export class ScaleNotationComponent {
             if (i != scale.Notes.length -1  && note.Key == KeyboardKey.B) {
                 octave -= 1;
             }
-            const noteInSyntax = `${note.Key.toString()}${note.Modifier.toString()}${octave}`;
+            const noteInSyntax = `${note.Key.toString()}${octave}`;
             notesInSyntax.push(noteInSyntax);
         }
         
@@ -152,8 +157,11 @@ export class ScaleNotationComponent {
                 });
             
             if (currentIndex == 0) {
+                const firstNote = scale.Notes[0];
+                const keySignature = `${firstNote.Key.toString()}${firstNote.Modifier.toString()}`
                 stave.addClef('bass')
-                    .addTimeSignature('4/4');
+                    .addTimeSignature('4/4')
+                    .addKeySignature(keySignature);
                 system.addConnector('brace');
                 system.addConnector('singleRight');
                 system.addConnector('singleLeft');

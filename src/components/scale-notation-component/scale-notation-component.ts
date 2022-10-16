@@ -16,17 +16,13 @@ export class ScaleNotationComponent {
         });
     }
 
-    private appendSystem(options: SystemOptions) {
-        const system = this.m_factory.System({ 
-                x: options.x,
-                y: options.y,
-                width: options.width, 
-                spaceBetweenStaves: 10 
-        });
-        return system;
+    private clear(): void {
+        this.m_factory.getContext().clear();
     }
 
     public renderScale(width: number, scale: KeyboardScale)  {
+        this.clear();
+
         const score = this.m_factory.EasyScore();
         score.set({time:'4/4'});
 

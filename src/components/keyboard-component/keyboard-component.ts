@@ -87,7 +87,6 @@ export class KeyboardComponent {
         this.m_soundService.onNotePlayed((note: SoundServiceNote) => {
             const modifierString = note.Modifier.toString();
             let elementId = `${note.Note}${note.octave.toString()}${modifierString}`;
-            console.log(elementId);
             let element = document.getElementById(elementId);
             if (element == null) {
                 const keyboardNote= new KeyboardNote(note.Note as KeyboardKey,note.Modifier.toString() as KeyboardKeyModifier);

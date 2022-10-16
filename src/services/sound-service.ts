@@ -68,7 +68,8 @@ export class SoundService {
     public PlayNotes(notes: SoundServiceNote[]): void {
         Tone.start().then(() => {
             Tone.Transport.stop();
-            var toneNotes = notes.map((note: SoundServiceNote) => {
+            Tone.Transport.cancel();
+            const toneNotes = notes.map((note: SoundServiceNote) => {
                 return `${note.Note}${note.Modifier}${note.octave.toString()}`;
             });
             const sequence = new Tone.Sequence((time, note) => {
@@ -84,8 +85,8 @@ export class SoundService {
 
     public PlayNote(note: SoundServiceNote): void {
         Tone.start().then(() => {
-            var toneNote = `${note.Note}${note.Modifier}${note.octave.toString()}`
-            var velocity = '8n';
+            const toneNote = `${note.Note}${note.Modifier}${note.octave.toString()}`
+            const velocity = '8n';
             this.synth.triggerAttackRelease(toneNote, velocity);
             this.dispatchEvent(new NotePressedEvent(note));
         });

@@ -38,10 +38,15 @@ export class ScaleNotationComponent {
         // Once up the scale
         for(let i=0;i<scale.Notes.length;i++) {
             const note = scale.Notes[i];
-            if (i != 0 && note.Key == KeyboardKey.C) {
+            if (i != 0 && note.Key == KeyboardKey.C && scale.Notes[i-1].Key != KeyboardKey.C) {
                 octave += 1;
             }
-            const noteInSyntax = `${note.Key.toString()}${octave}`;
+            let noteInSyntax = '';
+            if (scale.Signature) {
+                noteInSyntax = `${note.Key.toString()}${octave}`;
+            } else {
+                noteInSyntax = `${note.Key.toString()}${note.Modifier.toString()}${octave}`;
+            }
             notesInSyntax.push(noteInSyntax);
         }
 
@@ -69,6 +74,10 @@ export class ScaleNotationComponent {
 
             let notesToAdd = notesInSyntax.splice(0,4);
             notesToAdd[0] += '/q'; // Convert all notes to quarter notes.
+            while (notesToAdd.length != 4) {
+                // pad with rests
+                notesToAdd.push('d4/r');
+            } 
             const notesJoined = notesToAdd.join(',');
 
             let stave = system
@@ -86,11 +95,13 @@ export class ScaleNotationComponent {
                 });
             
             if (currentIndex == 0) {
-                const firstNote = scale.Notes[0];
-                const keySignature = `${firstNote.Key.toString()}${firstNote.Modifier.toString()}`
+
                 stave.addClef('treble')
-                    .addTimeSignature('4/4')
-                    .addKeySignature(keySignature);
+                    .addTimeSignature('4/4');
+                if (scale.Signature) {
+                    stave.addKeySignature(scale.Signature);
+                }
+
                 system.addConnector('brace');
                 system.addConnector('singleRight');
                 system.addConnector('singleLeft');
@@ -108,11 +119,16 @@ export class ScaleNotationComponent {
         
         // Once up the scale
         for(let i=0;i<scale.Notes.length;i++) {
-            const note = scale.Notes[i];
-            if (i != 0 && note.Key == KeyboardKey.C) {
+            const note = scale.Notes[i];            
+            if (i != 0 && note.Key == KeyboardKey.C && scale.Notes[i-1].Key != KeyboardKey.C) {
                 octave += 1;
             }
-            const noteInSyntax = `${note.Key.toString()}${octave}`;
+            let noteInSyntax = '';
+            if (scale.Signature) {
+                noteInSyntax = `${note.Key.toString()}${octave}`;
+            } else {
+                noteInSyntax = `${note.Key.toString()}${note.Modifier.toString()}${octave}`;
+            }
             notesInSyntax.push(noteInSyntax);
         }
 
@@ -140,6 +156,10 @@ export class ScaleNotationComponent {
 
             let notesToAdd = notesInSyntax.splice(0,4);
             notesToAdd[0] += '/q'; // Convert all notes to quarter notes.
+            while (notesToAdd.length != 4) {
+                // pad with rests
+                notesToAdd.push('d4/r');
+            } 
             const notesJoined = notesToAdd.join(',');
 
             let stave = system
@@ -157,11 +177,12 @@ export class ScaleNotationComponent {
                 });
             
             if (currentIndex == 0) {
-                const firstNote = scale.Notes[0];
-                const keySignature = `${firstNote.Key.toString()}${firstNote.Modifier.toString()}`
+                const firstNote = scale.Notes[0];                
                 stave.addClef('bass')
                     .addTimeSignature('4/4')
-                    .addKeySignature(keySignature);
+                if (scale.Signature) {
+                    stave.addKeySignature(scale.Signature);
+                }
                 system.addConnector('brace');
                 system.addConnector('singleRight');
                 system.addConnector('singleLeft');

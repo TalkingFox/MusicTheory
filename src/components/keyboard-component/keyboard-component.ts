@@ -104,7 +104,7 @@ export class KeyboardComponent {
 
     public async playScale(scale: KeyboardScale, octave: number) : Promise<void> {        
         let soundServiceNotes = scale.Notes.map((note: KeyboardNote, index: number) => {
-            if (note.Key == KeyboardKey.C && index != 0) {
+            if (note.Key == KeyboardKey.C && index != 0 && scale.Notes[index-1].Key != KeyboardKey.C) {
                 octave += 1;
             }
             let soundServiceNote = new SoundServiceNote();

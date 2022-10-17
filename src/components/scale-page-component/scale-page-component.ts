@@ -15,13 +15,49 @@ export class ScalePageComponent {
     private m_activeScale: ScalePageScale;
 
     private m_supportedScales: Map<string,ScalePageScale> = new Map([
+        ['A Minor', {
+            Notes: KeyboardScale.AMinor,
+            Name: 'A Minor'
+        }],
+        ['Bb Major', {
+            Notes: KeyboardScale.BFlatMajor,
+            Name: 'Bb Major'
+        }],
         ['C Major', {
             Notes: KeyboardScale.CMajor,
             Name: 'C Major'
         }],
+        ['Chromatic Scale', {
+            Notes: KeyboardScale.Chromatic,
+            Name: 'Chromatic Scale'
+        }],
+        ['D Minor', {
+            Notes: KeyboardScale.DMinor,
+            Name: 'D Minor'
+        }],
+        ['D Major', {
+            Notes: KeyboardScale.DMajor,
+            Name: 'D Major'
+        }],
+        ['E Minor', {
+            Notes: KeyboardScale.EMinor,
+            Name: 'E Minor'
+        }],
+        ['Eb Major', {
+            Notes: KeyboardScale.EFlatMajor,
+            Name: 'Eb Major'
+        }],
         ['F Major', {
             Notes: KeyboardScale.FMajor,
             Name: 'F Major'
+        }],
+        ['G Major', {
+            Notes: KeyboardScale.GMajor,
+            Name: 'G Major'
+        }],
+        ['G Minor', {
+            Notes: KeyboardScale.GMinor,
+            Name: 'G Minor'
         }],
     ]);
 

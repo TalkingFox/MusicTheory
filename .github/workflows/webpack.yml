@@ -31,6 +31,7 @@ jobs:
           role-to-assume: ${{secrets.DEPLOYERROLEARN}}
           role-duration-seconds: 900
           role-session-name: PublishMusicTheory
+          role-skip-session-tagging: true
 
       - name: Build
         run: |

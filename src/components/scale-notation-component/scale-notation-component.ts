@@ -1,3 +1,4 @@
+import './scale-notation.css'
 import { EasyScore, Factory } from "vexflow";
 import { KeyboardKey } from "../keyboard-component/enums";
 import { KeyboardScale } from "../keyboard-component/keyboard-scale";

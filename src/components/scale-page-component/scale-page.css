@@ -1,5 +1,15 @@
 .scale-link { 
     cursor: pointer;
+    list-style: none;
+    background-color: #e6e6e6;
+}
+
+#scale-parent {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 10px;    
+    max-width: 50%;
+    margin:auto;
 }
 
 body {

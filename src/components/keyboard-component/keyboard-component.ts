@@ -118,7 +118,8 @@ export class KeyboardComponent {
     }
 
     private construct(settings: KeyboardComponentSettings): Element {
-        var container = document.createElement('div');        
+        var container = document.createElement('div');
+        container.id = 'keyboard-parent';
 
         var currentNode = this.m_lookupChain.getNode(settings.startingNote);
         var currentOctave = settings.octave;

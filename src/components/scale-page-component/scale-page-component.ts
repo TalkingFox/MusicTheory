@@ -78,6 +78,7 @@ export class ScalePageComponent {
 
     private renderSupportedScales(parentElement: HTMLElement): void {    
         const listElement = document.createElement('ul');
+        listElement.id = 'scale-parent';
         this.m_supportedScales.forEach((scale: ScalePageScale) => {
             const scaleElement = document.createElement('li');
             scaleElement.textContent = scale.Name;

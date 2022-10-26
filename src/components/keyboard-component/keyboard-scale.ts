@@ -5,6 +5,7 @@ export class KeyboardScale {
     private m_notes: KeyboardNote[];
     private m_signature: string;
 
+    // See supported signatures: https://github.com/0xfe/vexflow/blob/d65d409d0a4788d8e39222bc7508dcb91acd9871/tests/vexflow_test_helpers.ts
     public constructor(notes: KeyboardNote[], signature?: string) {
         this.m_notes = notes;
         this.m_signature = signature;

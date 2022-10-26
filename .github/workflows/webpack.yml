@@ -38,4 +38,4 @@ jobs:
           npm install
           npm run build-prod
           aws s3 sync ./dist s3://${{secrets.APPBUCKET}}
-          aws cloudfront create-invalidation ${{secrets.DISTRIBUTIONID}} --paths *
+          aws cloudfront create-invalidation --distribution-id ${{secrets.DISTRIBUTIONID}} --paths *

@@ -12,6 +12,14 @@
     margin:auto;
 }
 
+#play-scale-parent {
+    display: flex;
+}
+#play-scale {
+    max-width: 25%;
+    margin:auto;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
 }

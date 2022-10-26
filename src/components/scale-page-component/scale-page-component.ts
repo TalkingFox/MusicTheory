@@ -105,18 +105,23 @@ export class ScalePageComponent {
         this.renderSupportedScales(scaleContainer);
         document.body.appendChild(scaleContainer);
     
-        const notationContainer = document.createElement('div');
-        notationContainer.id = 'notation-container';
-        document.body.appendChild(notationContainer);
-        this.m_notation = new ScaleNotationComponent(notationContainer);
-    
+        var buttonParent = document.createElement('div');
+        buttonParent.id = 'play-scale-parent';
         var button = document.createElement('button')
+        button.id = 'play-scale';
         button.textContent = "Play C Major Scale"
         button.addEventListener('click', () => {
             this.m_keyboard.playScale(this.m_activeScale.Notes, 4)
         });
-        document.body.appendChild(button);
+        buttonParent.appendChild(button)
+        document.body.appendChild(buttonParent);
         this.m_playScale = button;
+
+        const notationContainer = document.createElement('div');
+        notationContainer.id = 'notation-container';
+        document.body.appendChild(notationContainer);
+        this.m_notation = new ScaleNotationComponent(notationContainer);
+        
 
         const keyboardContainer = document.createElement('div');
         keyboardContainer.id = 'keyboard-container';

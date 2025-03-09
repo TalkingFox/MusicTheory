@@ -20,26 +20,26 @@ export class ScaleNotationComponent {
         this.m_factory.getContext().clear();
     }
 
-    public renderScale(width: number, scale: KeyboardScale)  {
+    public renderScale(width: number, scale: KeyboardScale) {
         this.clear();
 
         const score = this.m_factory.EasyScore();
-        score.set({time:'4/4'});
+        score.set({ time: '4/4' });
 
         this.renderTrebleClef(score, scale, width);
         this.renderBassClef(score, scale, width);
-        
+
         this.m_factory.draw();
     }
 
     private renderTrebleClef(score: EasyScore, scale: KeyboardScale, width: number) {
         let octave = 4;
         const notesInSyntax = [];
-        
+
         // Once up the scale
-        for(let i=0;i<scale.Notes.length;i++) {
+        for (let i = 0; i < scale.Notes.length; i++) {
             const note = scale.Notes[i];
-            if (i != 0 && note.Key == KeyboardKey.C && scale.Notes[i-1].Key != KeyboardKey.C) {
+            if (i != 0 && note.Key == KeyboardKey.C && scale.Notes[i - 1].Key != KeyboardKey.C) {
                 octave += 1;
             }
             let noteInSyntax = '';
@@ -52,20 +52,20 @@ export class ScaleNotationComponent {
         }
 
         //Once down the scale
-        for(let i=scale.Notes.length-1;i>=0;i--) {
+        for (let i = scale.Notes.length - 1; i >= 0; i--) {
             const note = scale.Notes[i];
-            if (i != scale.Notes.length -1  && note.Key == KeyboardKey.B) {
+            if (i != scale.Notes.length - 1 && note.Key == KeyboardKey.B) {
                 octave -= 1;
             }
             const noteInSyntax = `${note.Key.toString()}${octave}`;
             notesInSyntax.push(noteInSyntax);
         }
-        
+
         let currentIndex = 0;
         const measureWidth = width / 4;
 
         while (notesInSyntax.length > 0) {
-            
+
             let system = this.m_factory.System({
                 x: measureWidth * (currentIndex),
                 y: 0,
@@ -73,12 +73,12 @@ export class ScaleNotationComponent {
                 spaceBetweenStaves: 10
             });
 
-            let notesToAdd = notesInSyntax.splice(0,4);
+            let notesToAdd = notesInSyntax.splice(0, 4);
             notesToAdd[0] += '/q'; // Convert all notes to quarter notes.
             while (notesToAdd.length != 4) {
                 // pad with rests
                 notesToAdd.push('d4/r');
-            } 
+            }
             const notesJoined = notesToAdd.join(',');
 
             let stave = system
@@ -94,7 +94,7 @@ export class ScaleNotationComponent {
                         )
                     ]
                 });
-            
+
             if (currentIndex == 0) {
 
                 stave.addClef('treble')
@@ -117,11 +117,11 @@ export class ScaleNotationComponent {
             octave -= 1;
         }
         const notesInSyntax = [];
-        
+
         // Once up the scale
-        for(let i=0;i<scale.Notes.length;i++) {
-            const note = scale.Notes[i];            
-            if (i != 0 && note.Key == KeyboardKey.C && scale.Notes[i-1].Key != KeyboardKey.C) {
+        for (let i = 0; i < scale.Notes.length; i++) {
+            const note = scale.Notes[i];
+            if (i != 0 && note.Key == KeyboardKey.C && scale.Notes[i - 1].Key != KeyboardKey.C) {
                 octave += 1;
             }
             let noteInSyntax = '';
@@ -134,20 +134,20 @@ export class ScaleNotationComponent {
         }
 
         //Once down the scale
-        for(let i=scale.Notes.length-1;i>=0;i--) {
+        for (let i = scale.Notes.length - 1; i >= 0; i--) {
             const note = scale.Notes[i];
-            if (i != scale.Notes.length -1  && note.Key == KeyboardKey.B) {
+            if (i != scale.Notes.length - 1 && note.Key == KeyboardKey.B) {
                 octave -= 1;
             }
             const noteInSyntax = `${note.Key.toString()}${octave}`;
             notesInSyntax.push(noteInSyntax);
         }
-        
+
         let currentIndex = 0;
         const measureWidth = width / 4;
 
         while (notesInSyntax.length > 0) {
-            
+
             let system = this.m_factory.System({
                 x: measureWidth * (currentIndex),
                 y: 75,
@@ -155,12 +155,12 @@ export class ScaleNotationComponent {
                 spaceBetweenStaves: 10
             });
 
-            let notesToAdd = notesInSyntax.splice(0,4);
+            let notesToAdd = notesInSyntax.splice(0, 4);
             notesToAdd[0] += '/q'; // Convert all notes to quarter notes.
             while (notesToAdd.length != 4) {
                 // pad with rests
                 notesToAdd.push('d4/r');
-            } 
+            }
             const notesJoined = notesToAdd.join(',');
 
             let stave = system
@@ -176,9 +176,9 @@ export class ScaleNotationComponent {
                         )
                     ]
                 });
-            
+
             if (currentIndex == 0) {
-                const firstNote = scale.Notes[0];                
+                const firstNote = scale.Notes[0];
                 stave.addClef('bass')
                     .addTimeSignature('4/4')
                 if (scale.Signature) {
@@ -190,5 +190,5 @@ export class ScaleNotationComponent {
             }
             currentIndex += 1;
         }
-    }    
+    }
 }

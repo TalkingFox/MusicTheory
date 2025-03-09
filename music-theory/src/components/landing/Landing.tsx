@@ -1,7 +1,5 @@
 const Landing = () => {
-    return <>
-        <p>Hello World!</p>
-    </>
+    return <div></div>
 };
 
 export default Landing;

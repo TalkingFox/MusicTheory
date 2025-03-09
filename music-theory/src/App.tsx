@@ -14,7 +14,7 @@ function App() {
             <Routes>
                 <Route path="scales" element={<Scales />}></Route>
                 <Route path="exercises" element={<Exercises />}></Route>
-                <Route path="*" element={<Landing />} />
+                <Route path="*" element={<Landing/>} />
             </Routes>
         </>
     )

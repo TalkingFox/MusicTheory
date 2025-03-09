@@ -1,0 +1,25 @@
+.scale-link { 
+    cursor: pointer;
+    list-style: none;
+    background-color: #e6e6e6;
+}
+
+#scale-parent {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 10px;    
+    max-width: 50%;
+    margin:auto;
+}
+
+#play-scale-parent {
+    display: flex;
+}
+#play-scale {
+    max-width: 25%;
+    margin:auto;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}

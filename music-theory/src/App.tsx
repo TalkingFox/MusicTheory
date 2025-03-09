@@ -3,6 +3,9 @@ import { Link, Route, Routes } from 'react-router'
 import Scales from './components/scales/Scales';
 import Exercises from './components/exercises/Exercises';
 import Landing from './components/landing/Landing';
+import { SoundService } from './services/sound-service/SoundService';
+
+const soundService: SoundService = new SoundService();
 
 function App() {
     return (
@@ -12,8 +15,8 @@ function App() {
                 <Navigation />
             </div>
             <Routes>
-                <Route path="scales" element={<Scales />}></Route>
-                <Route path="exercises" element={<Exercises />}></Route>
+                <Route path="scales" element={<Scales soundService={soundService} />}></Route>
+                <Route path="exercises" element={<Exercises soundService={soundService}/>}></Route>
                 <Route path="*" element={<Landing/>} />
             </Routes>
         </>

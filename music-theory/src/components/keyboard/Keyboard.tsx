@@ -25,9 +25,17 @@ const Keyboard = ({ soundService, numberOfKeys, startingNote, octave }: Keyboard
 
     soundService.Deregister('keyboard');
     soundService.onNotePlayed('keyboard', (note: SoundServiceNote) => {
-        const noteKey = `${note.Note}${note.octave}${note.Modifier}`;
-        const pressedKeyHandle = keyHandlesByKey.get(noteKey);
+        let noteKey = `${note.Note}${note.octave}${note.Modifier}`;
+        let pressedKeyHandle = keyHandlesByKey.get(noteKey);
         if (!pressedKeyHandle) {
+            const keyboardNote = new KeyboardNote(note.Note as KeyboardKey, note.Modifier);
+            const matchingNode = lookupChain.getNode(keyboardNote);
+            const matchingNote = matchingNode.Notes[0];
+            noteKey = `${matchingNote.Key}${note.octave}${note.Modifier}`;
+            pressedKeyHandle = keyHandlesByKey.get(noteKey);
+        }
+        if (!pressedKeyHandle) {
+            console.log(`Could not find key ${noteKey}`);
             return;
         }
 
@@ -42,7 +50,6 @@ const Keyboard = ({ soundService, numberOfKeys, startingNote, octave }: Keyboard
     for (let i = 0; i < numberOfKeys; i++) {
         var firstNote = currentNode.Notes[0];
         const key = `${firstNote.Key}${currentOctave}${firstNote.Modifier.toString()}`
-
         const ref = useRef<KeyboardButtonHandles>(null) as React.RefObject<KeyboardButtonHandles>;
         keyHandlesByKey.set(key, ref);
         const keyElement = <KeyboardButton

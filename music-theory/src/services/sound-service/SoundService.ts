@@ -1,30 +1,24 @@
 import { Synth } from "tone";
 import { SoundServiceNote } from "./SoundServiceNote";
-import { SoundServiceEvents } from "./SoundServiceEvents";
-import { NotePressedEvent } from "./NotePressedEvent";
 import * as Tone from 'tone';
 
 export class SoundService {
     private synth: Synth;
+    private noteCallbacks: Map<string, (note: SoundServiceNote) => void>;
 
     public constructor() {
         this.synth = new Synth().toDestination();
         this.synth.volume.value = -10;
+
+        this.noteCallbacks = new Map<string, (note: SoundServiceNote) => void>();
     }
 
-    public onNotePlayed(callback: (note: SoundServiceNote) => void): void {
-        const eventName = SoundServiceEvents[SoundServiceEvents.NotePlayed];
-        addEventListener(eventName, (event: Event) => {
-            callback((<CustomEvent>event).detail);
-        });
+    public onNotePlayed(id: string, callback: (note: SoundServiceNote) => void): void {
+        this.noteCallbacks.set(id, callback);
     }
 
-    private dispatchEvent(event: NotePressedEvent) {
-        const customEvent = new CustomEvent(
-            SoundServiceEvents[event.Kind],
-            { bubbles: true, detail: event.Body }
-        );
-        dispatchEvent(customEvent);
+    public Deregister(id: string) {
+        this.noteCallbacks.delete(id);
     }
 
     public PlayNotes(notes: SoundServiceNote[]): void {
@@ -37,7 +31,9 @@ export class SoundService {
             });
             const sequence = new Tone.Sequence((time, note) => {
                 const soundServiceNote = SoundServiceNote.fromToneSyntax(note);
-                this.dispatchEvent(new NotePressedEvent(soundServiceNote));
+                this.noteCallbacks.forEach((callback) => {
+                    callback(soundServiceNote);
+                });
                 this.synth.triggerAttackRelease(note, '8n', time);
             }, toneNotes);
             sequence.loop = false;
@@ -51,7 +47,9 @@ export class SoundService {
             const toneNote = `${note.Note}${note.Modifier}${note.octave.toString()}`
             const velocity = '8n';
             this.synth.triggerAttackRelease(toneNote, velocity);
-            this.dispatchEvent(new NotePressedEvent(note));
+            this.noteCallbacks.forEach((callback) => {
+                callback(note);
+            });
         });
     }
 }

@@ -1,11 +1,12 @@
 import { KeyboardNote } from "../../common/KeyboardNote";
 import { SoundService } from "../../services/sound-service/SoundService";
 import { KeyboardChain } from "./KeyboardChain";
-import KeyboardButton, { KeyboardButtonProps } from "./KeyboardButton";
+import KeyboardButton, { KeyboardButtonHandles } from "./KeyboardButton";
 import { KeyboardNode } from "./KeyboardNode";
 import { KeyboardKey } from "../../common/KeyboardEnums";
 import { SoundServiceNote } from "../../services/sound-service/SoundServiceNote";
 import './Keyboard.css';
+import { useRef } from "react";
 
 export interface KeyboardProps {
     soundService: SoundService,
@@ -18,20 +19,20 @@ const Keyboard = ({ soundService, numberOfKeys, startingNote, octave }: Keyboard
     const lookupChain = new KeyboardChain();
 
     const pianoElements: React.JSX.Element[] = [];
-    const keyPropsByKey = new Map<string, KeyboardButtonProps>();
+    const keyHandlesByKey = new Map<string, React.RefObject<KeyboardButtonHandles>>();
     let currentNode = lookupChain.getNode(startingNote);
     let currentOctave = octave;
 
-    soundService.onNotePlayed((note: SoundServiceNote) => {
+    soundService.Deregister('keyboard');
+    soundService.onNotePlayed('keyboard', (note: SoundServiceNote) => {
         const noteKey = `${note.Note}${note.octave}${note.Modifier}`;
-        const pressedKey = keyPropsByKey.get(noteKey);
-        if (!pressedKey) {
+        const pressedKeyHandle = keyHandlesByKey.get(noteKey);
+        if (!pressedKeyHandle) {
             return;
         }
 
-        pressedKey.isPressed = true;
-        console.log('Pressed Key');
-        setTimeout(() => { pressedKey.isPressed = false }, 250);
+        pressedKeyHandle.current?.setPressed(true);
+        setTimeout(() => { pressedKeyHandle.current?.setPressed(false) }, 250);
     });
 
     const playNote = (soundServiceNote: SoundServiceNote) => {
@@ -41,17 +42,17 @@ const Keyboard = ({ soundService, numberOfKeys, startingNote, octave }: Keyboard
     for (let i = 0; i < numberOfKeys; i++) {
         var firstNote = currentNode.Notes[0];
         const key = `${firstNote.Key}${currentOctave}${firstNote.Modifier.toString()}`
-        const keyProps: KeyboardButtonProps = {
-            modifier: firstNote.Modifier,
-            note: firstNote.Key,
-            octave: currentOctave,
-            isPressed: false,
-            onPressed: playNote
-        };
-        keyPropsByKey.set(key, keyProps);
+
+        const ref = useRef<KeyboardButtonHandles>(null) as React.RefObject<KeyboardButtonHandles>;
+        keyHandlesByKey.set(key, ref);
         const keyElement = <KeyboardButton
             key={key}
-            {...keyProps}>
+            modifier={firstNote.Modifier}
+            note={firstNote.Key}
+            octave={currentOctave}
+            onPressed={playNote}
+            ref={ref}
+        >
         </KeyboardButton>;
 
         if (firstNote.Key == KeyboardKey.B) {

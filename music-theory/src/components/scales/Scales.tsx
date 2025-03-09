@@ -3,6 +3,11 @@ import { KeyboardScale } from "./KeyboardScale";
 import Notation from "../notation/Notation";
 import Keyboard from "../keyboard/Keyboard";
 import './Scales.css';
+import { SoundService } from "../../services/sound-service/SoundService";
+import { KeyboardNote } from "../../common/KeyboardNote";
+import { KeyboardKey } from "../../common/KeyboardEnums";
+import { NoteModifier } from "../../common/NoteModifier";
+import { SoundServiceNote } from "../../services/sound-service/SoundServiceNote";
 
 export interface ScalePageScale {
     Notes: KeyboardScale;
@@ -59,7 +64,11 @@ function getSupportedScales(): Map<string, ScalePageScale> {
     return supportedScales;
 }
 
-const Scales = () => {
+export interface ScalesProps {
+    soundService: SoundService
+}
+
+const Scales = ({ soundService }: ScalesProps) => {
     const scalesByName = useMemo(getSupportedScales, []);
     const [activeScale, setActiveScale] = useState<ScalePageScale>(scalesByName.get("C Major") as ScalePageScale);
 
@@ -76,8 +85,22 @@ const Scales = () => {
     });
 
     const playScale = () => {
+        let octave = 4;
+        const scale = activeScale.Notes;
+        let soundServiceNotes = scale.Notes.map((note: KeyboardNote, index: number) => {
+            if (note.Key == KeyboardKey.C && index != 0 && scale.Notes[index - 1].Key != KeyboardKey.C) {
+                octave += 1;
+            }
+            const serviceNote = KeyboardKey[note.Key];
+            const modifier = note.Modifier;
+            let soundServiceNote = new SoundServiceNote(serviceNote, modifier, octave);
 
+            return soundServiceNote;
+        });
+        soundService.PlayNotes(soundServiceNotes);
     };
+
+    const startingNote = new KeyboardNote(KeyboardKey.A, NoteModifier.Natural);
 
     return <>
         <div id='scale-container'>
@@ -89,7 +112,7 @@ const Scales = () => {
             <button id='play-scale' onClick={playScale}>Play {activeScale.Name} Scale</button>
         </div>
         <Notation notes={activeScale.Notes}></Notation>
-        <Keyboard></Keyboard>
+        <Keyboard numberOfKeys={56} octave={1} startingNote={startingNote} soundService={soundService}></Keyboard>
     </>
 };
 

@@ -1,5 +1,6 @@
-import { KeyboardKey, KeyboardKeyModifier } from "../../common/keyboard-enums";
-import { KeyboardNote } from "../../common/keyboard-note";
+import { KeyboardKey } from "../../common/KeyboardEnums";
+import { KeyboardNote } from "../../common/KeyboardNote";
+import { NoteModifier } from "../../common/NoteModifier";
 
 export class KeyboardScale {
     private m_notes: KeyboardNote[];
@@ -31,14 +32,14 @@ export class KeyboardScale {
     ], 'Am');
 
     public static BFlatMajor: KeyboardScale = new KeyboardScale([
-        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.B, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.C),
         new KeyboardNote(KeyboardKey.D),
-        new KeyboardNote(KeyboardKey.E, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.E, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.F),
         new KeyboardNote(KeyboardKey.G),
         new KeyboardNote(KeyboardKey.A),
-        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.B, NoteModifier.Flat),
     ], 'Bb');
 
     public static CMajor: KeyboardScale = new KeyboardScale([
@@ -54,16 +55,16 @@ export class KeyboardScale {
 
     public static Chromatic: KeyboardScale = new KeyboardScale([
         new KeyboardNote(KeyboardKey.C),
-        new KeyboardNote(KeyboardKey.C, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.C, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.D),
-        new KeyboardNote(KeyboardKey.D, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.D, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.E),
         new KeyboardNote(KeyboardKey.F),
-        new KeyboardNote(KeyboardKey.F, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.F, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.G),
-        new KeyboardNote(KeyboardKey.G, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.G, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.A),
-        new KeyboardNote(KeyboardKey.A, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.A, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.B),
         new KeyboardNote(KeyboardKey.C)
     ]);
@@ -74,7 +75,7 @@ export class KeyboardScale {
         new KeyboardNote(KeyboardKey.F),
         new KeyboardNote(KeyboardKey.G),
         new KeyboardNote(KeyboardKey.A),
-        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.B, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.C),
         new KeyboardNote(KeyboardKey.D)
     ], 'Dm');
@@ -82,17 +83,17 @@ export class KeyboardScale {
     public static DMajor: KeyboardScale = new KeyboardScale([
         new KeyboardNote(KeyboardKey.D),
         new KeyboardNote(KeyboardKey.E),
-        new KeyboardNote(KeyboardKey.F, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.F, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.G),
         new KeyboardNote(KeyboardKey.A),
         new KeyboardNote(KeyboardKey.B),
-        new KeyboardNote(KeyboardKey.C, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.C, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.D)
     ], 'D');
 
     public static EMinor: KeyboardScale = new KeyboardScale([
         new KeyboardNote(KeyboardKey.E),
-        new KeyboardNote(KeyboardKey.F, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.F, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.G),
         new KeyboardNote(KeyboardKey.A),
         new KeyboardNote(KeyboardKey.B),
@@ -102,14 +103,14 @@ export class KeyboardScale {
     ], 'Em');
 
     public static EFlatMajor: KeyboardScale = new KeyboardScale([
-        new KeyboardNote(KeyboardKey.E, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.E, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.F),
         new KeyboardNote(KeyboardKey.G),
-        new KeyboardNote(KeyboardKey.A, KeyboardKeyModifier.Flat),
-        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.A, NoteModifier.Flat),
+        new KeyboardNote(KeyboardKey.B, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.C),
         new KeyboardNote(KeyboardKey.D),
-        new KeyboardNote(KeyboardKey.E, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.E, NoteModifier.Flat),
     ], 'Eb');
 
 
@@ -117,7 +118,7 @@ export class KeyboardScale {
         new KeyboardNote(KeyboardKey.F),
         new KeyboardNote(KeyboardKey.G),
         new KeyboardNote(KeyboardKey.A),
-        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.B, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.C),
         new KeyboardNote(KeyboardKey.D),
         new KeyboardNote(KeyboardKey.E),
@@ -131,17 +132,17 @@ export class KeyboardScale {
         new KeyboardNote(KeyboardKey.C),
         new KeyboardNote(KeyboardKey.D),
         new KeyboardNote(KeyboardKey.E),
-        new KeyboardNote(KeyboardKey.F, KeyboardKeyModifier.Sharp),
+        new KeyboardNote(KeyboardKey.F, NoteModifier.Sharp),
         new KeyboardNote(KeyboardKey.G)
     ], 'G')
 
     public static GMinor: KeyboardScale = new KeyboardScale([
         new KeyboardNote(KeyboardKey.G),
         new KeyboardNote(KeyboardKey.A),
-        new KeyboardNote(KeyboardKey.B, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.B, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.C),
         new KeyboardNote(KeyboardKey.D),
-        new KeyboardNote(KeyboardKey.E, KeyboardKeyModifier.Flat),
+        new KeyboardNote(KeyboardKey.E, NoteModifier.Flat),
         new KeyboardNote(KeyboardKey.F),
         new KeyboardNote(KeyboardKey.G)
     ], 'Gm')

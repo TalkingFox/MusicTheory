@@ -7,9 +7,3 @@ export enum KeyboardKey {
     F = 'F',
     G = 'G',
 }
-
-export enum KeyboardKeyModifier {
-    Flat = 'b',
-    Sharp = '#',
-    Natural = '',
-}

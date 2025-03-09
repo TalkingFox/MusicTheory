@@ -1,8 +1,8 @@
 import { EasyScore, Factory } from "vexflow";
 import { KeyboardScale } from "../scales/KeyboardScale";
-import { KeyboardKey } from "../../common/keyboard-enums";
 import { useEffect, useRef } from "react";
 import './Notation.css';
+import { KeyboardKey } from "../../common/KeyboardEnums";
 
 export interface NotationProps {
     notes: KeyboardScale

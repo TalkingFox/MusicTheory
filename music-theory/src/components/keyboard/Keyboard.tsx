@@ -31,7 +31,7 @@ const Keyboard = ({ soundService, numberOfKeys, startingNote, octave }: Keyboard
             const keyboardNote = new KeyboardNote(note.Note as KeyboardKey, note.Modifier);
             const matchingNode = lookupChain.getNode(keyboardNote);
             const matchingNote = matchingNode.Notes[0];
-            noteKey = `${matchingNote.Key}${note.Octave}${note.Modifier}`;
+            noteKey = `${matchingNote.Key}${note.Octave}${matchingNote.Modifier}`;
             pressedKeyHandle = keyHandlesByKey.get(noteKey);
         }
         if (!pressedKeyHandle) {

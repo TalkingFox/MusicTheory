@@ -35,7 +35,8 @@ jobs:
 
       - name: Build
         run: |
+          cd music-theory
           npm install
-          npm run build-prod
+          npm run build
           aws s3 sync ./dist s3://${{secrets.APPBUCKET}}
           aws cloudfront create-invalidation --distribution-id ${{secrets.DISTRIBUTIONID}} --paths /*

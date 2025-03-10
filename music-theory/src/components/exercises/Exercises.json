@@ -1,0 +1,58 @@
+[
+    {
+        "timeSignature": "2/4",
+        "measures": [
+            ["G4-8n", "A4-8n", "G4-4n"],
+            ["G4-8n", "F4-8n", "E4-4n"],
+            ["G4-8n", "E4-8n", "F4-8n", "D4-8n"],
+            ["C4-4n", "C4-4n"]
+        ],
+        "signature": "C"
+    },
+    {
+        "timeSignature": "2/4",
+        "measures": [
+            ["B4-4n", "G4-4n"],
+            ["E4-8n", "G4-8n", "F4-8n", "E4-8n"],
+            ["F4-2n"],
+            ["A4-4n", "G4-4n"],
+            ["F4-8n", "A4-8n", "G4-8n", "F4-8n"],
+            ["E4-2n"]
+        ],
+        "signature": "G"
+    },
+    {
+        "timeSignature": "2/4",
+        "measures": [
+            ["F4-4n", "G4-8n", "A4-8n"],
+            ["B4-8n", "G4-8n", "G4-4n"],
+            ["G4-8n", "A4-8n", "B4-8n", "G4-8n"],
+            ["A4-4n", "G4-8n", "A4-8n"],
+            ["F4-2n"]
+        ],
+        "signature": "F"
+    },
+    {
+        "timeSignature": "2/4",
+        "measures": [
+            ["G4-8n", "A4-8n", "B4-8n", "G4-8n"],
+            ["F4-8n", "G4-8n", "A4-4n"],
+            ["A4-8n", "B4-8n", "C5-8n", "A4-8n"],
+            ["B4-8n", "C5-8n", "D5-4n"],
+            ["B4-4n", "A4-4n"],
+            ["G4-2n"]
+        ],
+        "signature": "G"
+    },
+    {
+        "timeSignature": "2/4",
+        "measures": [
+            ["B4-8n", "C5-8n", "B4-8n", "D5-8n"],
+            ["C5-4n", "A4-4n"],
+            ["B4-8n", "C5-8n", "B4-8n", "D5-8n"],
+            ["C5-8n", "A4-8n", "B4-8n", "C5-8n"],
+            ["A4-2n"]
+        ],
+        "signature": "C"
+    }
+]

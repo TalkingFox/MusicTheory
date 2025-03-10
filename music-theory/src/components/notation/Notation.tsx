@@ -166,7 +166,6 @@ function renderBassClef(factory: Factory, score: EasyScore, scale: KeyboardScale
             });
 
         if (currentIndex == 0) {
-            const firstNote = scale.Notes[0];
             stave.addClef('bass')
                 .addTimeSignature('4/4')
             if (scale.Signature) {

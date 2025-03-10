@@ -1,4 +1,3 @@
-import * as Tone from 'tone';
 import { NoteModifier } from "../../common/NoteModifier";
 
 export class SoundServiceNote {

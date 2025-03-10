@@ -1,4 +1,4 @@
-import { act, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SoundService } from "../../services/sound-service/SoundService";
 import exerciseData from './Exercises.json';
 import './Exercises.css';

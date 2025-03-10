@@ -1,14 +1,17 @@
+import * as Tone from 'tone';
 import { NoteModifier } from "../../common/NoteModifier";
 
 export class SoundServiceNote {
-    public Note: String;
+    public Note: string;
     public Modifier: NoteModifier;
-    public octave: number;
+    public Octave: number;
+    public NoteDuration: string;
 
-    public constructor(note: string, modifier: NoteModifier, octave: number) {
+    public constructor(note: string, modifier: NoteModifier, octave: number, noteDuration: string = '8n') {
         this.Note = note;
         this.Modifier = modifier;
-        this.octave = octave;
+        this.Octave = octave;
+        this.NoteDuration = noteDuration;
     }
 
     public static fromToneSyntax(toneSyntax: string): SoundServiceNote {
@@ -25,7 +28,16 @@ export class SoundServiceNote {
             octave = Number(toneSyntax[2]);
         }
 
-        const serviceNote = new SoundServiceNote(note, modifier, octave);
+        let duration = '8n';
+        if (toneSyntax.includes('-')) {
+            duration = toneSyntax.split('-')[1];
+        }
+
+        const serviceNote = new SoundServiceNote(note, modifier, octave, duration);
         return serviceNote;
+    }
+
+    public toToneSyntax(): string {
+        return `${this.Note}${this.Modifier}${this.Octave}-${this.NoteDuration}`;
     }
 }

@@ -97,7 +97,7 @@ const Scales = ({ soundService }: ScalesProps) => {
 
             return soundServiceNote;
         });
-        soundService.PlayNotes(soundServiceNotes);
+        soundService.PlayNotesFixed(soundServiceNotes);
     };
 
     const startingNote = new KeyboardNote(KeyboardKey.A, NoteModifier.Natural);

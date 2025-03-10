@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { act, useState } from "react";
 import { SoundService } from "../../services/sound-service/SoundService";
 import exerciseData from './Exercises.json';
 import './Exercises.css';
+import { SoundServiceNote } from "../../services/sound-service/SoundServiceNote";
 
 export interface ExercisesProps {
     soundService: SoundService
@@ -11,19 +12,24 @@ const Exercises = ({ soundService }: ExercisesProps) => {
     const [exerciseIndex, setExerciseIndex] = useState(0);
     const [measureIndex, setMeasureIndex] = useState(0);
 
+    const activeExercise = exerciseData[exerciseIndex];
+
     const loadPreviousExercise = () => {
+        setExerciseIndex(exerciseIndex - 1);
+        setMeasureIndex(0);
     };
 
     const loadNextExercise = () => {
-
+        setExerciseIndex(exerciseIndex + 1);
+        setMeasureIndex(0);
     };
 
     const loadPreviousMeasure = () => {
-
+        setMeasureIndex(measureIndex - 1);
     };
 
     const loadNextMeasure = () => {
-
+        setMeasureIndex(measureIndex + 1);
     };
 
     const showNotes = () => {
@@ -31,14 +37,21 @@ const Exercises = ({ soundService }: ExercisesProps) => {
     };
 
     const playMeasure = () => {
-
+        const notes = activeExercise.measures[measureIndex]
+            .map((note) =>
+                SoundServiceNote.fromToneSyntax(note)
+            );
+        soundService.PlayNotes(notes);
     };
 
     const playFullMelody = () => {
-
+        const melodyNotes = activeExercise.measures
+            .flatMap((notes) => notes.map(note =>
+                SoundServiceNote.fromToneSyntax(note)
+            ));
+        soundService.PlayNotes(melodyNotes);
     };
 
-    const activeExercise = exerciseData[exerciseIndex];
 
     return <>
         <div className="exercise-description-container">

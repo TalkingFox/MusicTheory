@@ -21,13 +21,45 @@ export class SoundService {
         this.noteCallbacks.delete(id);
     }
 
-    public PlayNotes(notes: SoundServiceNote[]): void {
+    public PlayNotes(serviceNotes: SoundServiceNote[]): void {
+        const toneValues: { source: SoundServiceNote, toneNote: string, time: number }[] = [];
+        serviceNotes.forEach((serviceNote, index) => {
+            const toneValue = {
+                source: serviceNote,
+                toneNote: `${serviceNote.Note}${serviceNote.Modifier}${serviceNote.Octave.toString()}`,
+                time: 0
+            }
+            if (index > 0) {
+                const previousNote = toneValues[index - 1];
+                toneValue.time += previousNote.time + Tone.Time(previousNote.source.NoteDuration).toSeconds();
+            }
+            toneValues.push(toneValue);
+        });
+
+        Tone.start().then(() => {
+            const transport = Tone.getTransport();
+            transport.stop();
+            transport.cancel();
+
+            const sequence = new Tone.Part((time, value) => {
+                this.noteCallbacks.forEach((callback) => {
+                    callback(value.source);
+                });
+                this.synth.triggerAttackRelease(value.toneNote, value.source.NoteDuration, time);
+            }, toneValues);
+            sequence.loop = false;
+            sequence.start(0);
+            transport.start();
+        });
+    }
+
+    public PlayNotesFixed(notes: SoundServiceNote[]): void {
         Tone.start().then(() => {
             const transport = Tone.getTransport();
             transport.stop();
             transport.cancel();
             const toneNotes = notes.map((note: SoundServiceNote) => {
-                return `${note.Note}${note.Modifier}${note.octave.toString()}`;
+                return `${note.Note}${note.Modifier}${note.Octave.toString()}`;
             });
             const sequence = new Tone.Sequence((time, note) => {
                 const soundServiceNote = SoundServiceNote.fromToneSyntax(note);
@@ -44,7 +76,7 @@ export class SoundService {
 
     public PlayNote(note: SoundServiceNote): void {
         Tone.start().then(() => {
-            const toneNote = `${note.Note}${note.Modifier}${note.octave.toString()}`
+            const toneNote = `${note.Note}${note.Modifier}${note.Octave.toString()}`
             const velocity = '8n';
             this.synth.triggerAttackRelease(toneNote, velocity);
             this.noteCallbacks.forEach((callback) => {

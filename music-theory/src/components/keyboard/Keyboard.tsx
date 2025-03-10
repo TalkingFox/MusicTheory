@@ -25,13 +25,13 @@ const Keyboard = ({ soundService, numberOfKeys, startingNote, octave }: Keyboard
 
     soundService.Deregister('keyboard');
     soundService.onNotePlayed('keyboard', (note: SoundServiceNote) => {
-        let noteKey = `${note.Note}${note.octave}${note.Modifier}`;
+        let noteKey = `${note.Note}${note.Octave}${note.Modifier}`;
         let pressedKeyHandle = keyHandlesByKey.get(noteKey);
         if (!pressedKeyHandle) {
             const keyboardNote = new KeyboardNote(note.Note as KeyboardKey, note.Modifier);
             const matchingNode = lookupChain.getNode(keyboardNote);
             const matchingNote = matchingNode.Notes[0];
-            noteKey = `${matchingNote.Key}${note.octave}${note.Modifier}`;
+            noteKey = `${matchingNote.Key}${note.Octave}${note.Modifier}`;
             pressedKeyHandle = keyHandlesByKey.get(noteKey);
         }
         if (!pressedKeyHandle) {
